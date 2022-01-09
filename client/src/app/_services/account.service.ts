@@ -11,7 +11,8 @@ export class AccountService {
 
   baseUrl = 'https://localhost:5001/api/';
 
-  private currentUserSource = new ReplaySubject<User| undefined>(1);
+
+  private currentUserSource = new ReplaySubject<User>(1);
 
   currentUser$ = this.currentUserSource.asObservable();
 
@@ -23,7 +24,7 @@ export class AccountService {
         map((response: User) =>{
           const user = response;
           if(user) {
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', JSON.stringify(user));
             this.currentUserSource.next(user);
           }
         })
@@ -35,7 +36,6 @@ export class AccountService {
     }
 
     logout(){
-      localStorage.removeItem('user');
-      this.currentUserSource.next(undefined);
+      sessionStorage.clear
     }
 }
